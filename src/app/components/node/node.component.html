@@ -1,0 +1,11 @@
+<div
+  class="node"
+  [class.startNode]="isStartNode"
+  [class.pathNode]="isOnPath"
+  [class.endNode]="isEndNode"
+  [ngClass]="{ wallNode: isWall }"
+  (click)="handleNodeLeftClick()"
+  (contextmenu)="onRightClick()"
+>
+  {{ distanceToShow() }}
+</div>

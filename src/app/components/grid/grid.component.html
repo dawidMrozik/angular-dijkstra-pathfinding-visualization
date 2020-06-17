@@ -1,0 +1,16 @@
+<div class="container">
+  <app-side-menu
+    (startAlgorithm)="startAlgorithm()"
+    (resetGrid)="resetGrid()"
+  ></app-side-menu>
+  <div id="grid-container">
+    <app-node
+      *ngFor="let node of nodes"
+      [distance]="distances[node]"
+      [node]="node"
+      [isOnPath]="nodesOnPath.includes(node)"
+      [isEndNode]="node === endNode"
+      [isStartNode]="node === startNode"
+    ></app-node>
+  </div>
+</div>

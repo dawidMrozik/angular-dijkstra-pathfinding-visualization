@@ -1,0 +1,42 @@
+.node {
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-bottom: 1px solid #6d95d6;
+  border-right: 1px solid #6d95d6;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.6rem;
+}
+
+.startNode {
+  background-color: #6cd478;
+}
+
+.endNode {
+  background-color: #d1706b;
+}
+
+.wallNode {
+  background-color: #6d95d6;
+}
+
+.pathNode {
+  background-color: #e6e670;
+  animation: showPath 1s;
+}
+
+@keyframes showPath {
+  from {
+    transform-origin: center;
+    transform: scale(1.2);
+    background-color: #e0896e;
+  }
+  to {
+    transform-origin: center;
+    transform: scale(1);
+    background-color: #e6e670;
+  }
+}
