@@ -7,21 +7,20 @@ import PriorityQueue from '../../algorithms/PriorityQueue';
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss'],
 })
-export class GridComponent implements OnInit, OnChanges {
+export class GridComponent implements OnInit {
   nodes = [];
   distances = {};
-  startNode = '7|7';
-  endNode = '22|26';
+  startNode: string = null;
+  endNode: string = null;
   path = {};
   nodesOnPath = [];
+  state = 'idle';
 
   constructor(private graphService: GraphService) {}
 
   ngOnInit(): void {
     this.nodes = this.graphService.getNodes();
   }
-
-  ngOnChanges(): void {}
 
   async startAlgorithm() {
     await this.djikstraAlgorithm(this.graphService.getGraph(), this.startNode);
@@ -30,10 +29,14 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   resetGrid() {
+    this.graphService.resetGraph();
     this.nodes = this.graphService.getNodes();
     this.distances = [];
     this.path = {};
     this.nodesOnPath = [];
+    this.startNode = null;
+    this.endNode = null;
+    this.state = 'idle';
   }
 
   async buildPath() {
@@ -87,5 +90,21 @@ export class GridComponent implements OnInit, OnChanges {
 
       currentIteration++;
     }
+  }
+
+  checkIfReadyToWalls() {
+    if (this.startNode && this.endNode) this.state = 'readyToWalls';
+  }
+
+  setStartNode(node) {
+    this.startNode = node;
+    this.state = 'startSelected';
+    this.checkIfReadyToWalls();
+  }
+
+  setEndNode(node) {
+    this.endNode = node;
+    this.state = 'endSelected';
+    this.checkIfReadyToWalls();
   }
 }

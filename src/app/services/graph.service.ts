@@ -10,6 +10,14 @@ export class GraphService {
   HEIGHT = 30;
 
   constructor() {
+    this.resetGraph();
+  }
+
+  getGraph() {
+    return this.graph;
+  }
+
+  resetGraph() {
     this.graph = new Graph();
 
     for (let row = 0; row < this.HEIGHT; row++) {
@@ -23,10 +31,6 @@ export class GraphService {
         this.addEdges(row, col);
       }
     }
-  }
-
-  getGraph() {
-    return this.graph;
   }
 
   addEdges(row, col) {

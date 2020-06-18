@@ -2,6 +2,7 @@
   <app-side-menu
     (startAlgorithm)="startAlgorithm()"
     (resetGrid)="resetGrid()"
+    [state]="state"
   ></app-side-menu>
   <div id="grid-container">
     <app-node
@@ -11,6 +12,9 @@
       [isOnPath]="nodesOnPath.includes(node)"
       [isEndNode]="node === endNode"
       [isStartNode]="node === startNode"
+      [state]="state"
+      (setStartNode)="setStartNode(node)"
+      (setEndNode)="setEndNode(node)"
     ></app-node>
   </div>
 </div>

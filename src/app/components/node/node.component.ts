@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GraphService } from 'src/app/services/graph.service';
-import { AppService } from 'src/app/services/app.service';
 
 @Component({
   selector: 'app-node',
@@ -9,31 +8,31 @@ import { AppService } from 'src/app/services/app.service';
 })
 export class NodeComponent implements OnInit {
   @Input() node: string;
+  @Input() state: string;
   @Input() distance: number;
   @Input() isOnPath: boolean;
   @Input() isEndNode: boolean;
   @Input() isStartNode: boolean;
   isWall: boolean = false;
+  @Output() setStartNode: EventEmitter<string> = new EventEmitter();
+  @Output() setEndNode: EventEmitter<string> = new EventEmitter();
 
-  constructor(
-    private graphService: GraphService,
-    private appService: AppService
-  ) {}
+  constructor(private graphService: GraphService) {}
 
   ngOnInit(): void {}
 
   handleNodeLeftClick() {
-    const state = this.appService.getState();
-
-    if (state === 'idle') {
-      this.appService.setStartNode(this.node);
+    if (this.state !== 'readyToWalls') {
+      this.setStartNode.emit(this.node);
+    } else {
+      this.toggleWall();
     }
   }
 
   onRightClick() {
-    const state = this.appService.getState();
+    this.setEndNode.emit(this.node);
 
-    if (state === 'idle') this.appService.setEndNode(this.node);
+    return false; // disables default behavior
   }
 
   distanceToShow() {
@@ -41,15 +40,17 @@ export class NodeComponent implements OnInit {
   }
 
   toggleWall() {
-    if (!this.isWall) {
-      this.graphService.removeNode(this.node);
-      this.isWall = true;
-    } else {
-      const [rowString, colString] = this.node.split('|');
-      const row = Number(rowString);
-      const col = Number(colString);
-      this.graphService.addEdges(row, col);
-      this.isWall = false;
+    if (!this.isStartNode && !this.isEndNode) {
+      if (!this.isWall) {
+        this.graphService.removeNode(this.node);
+        this.isWall = true;
+      } else {
+        const [rowString, colString] = this.node.split('|');
+        const row = Number(rowString);
+        const col = Number(colString);
+        this.graphService.addEdges(row, col);
+        this.isWall = false;
+      }
     }
   }
 }
